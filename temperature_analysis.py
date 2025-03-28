@@ -4,23 +4,23 @@ import matplotlib.pyplot as plt
 #function to find the highest temperature
 def find_highest_temperature(df):
     #convert the 'date' column to datetime format
-    df['date'] = pd.to_datetime(df['date'])
+    df['date'] = pd.to_datetime(df['date'], errors='coerce')  # Ensure invalid date entries are handled
     
-    #extract the 'month' and 'year' columns (this creates the 'month' column correctly)
+    #check if 'temp_max' column exists
+    if 'temp_max' not in df.columns:
+        print("Error: 'temp_max' column is missing.")
+        return
+    
+    #extract the 'month' and 'year' columns
     df['year'] = df['date'].dt.year
     df['month'] = df['date'].dt.month
     
-    #check if the 'month' column is created
-    print("Columns in the dataframe:\n")
-    print(df.columns)
-    
-    #finds the row with the highest temperature
+    #find the row with the highest temperature
     highest_temp = df.loc[df['temp_max'].idxmax()]
     highest_temp_month = highest_temp['month']
     highest_temp_value = highest_temp['temp_max']
     highest_temp_year = highest_temp['year']
     
-    print('\n')  #space for better reading
     print(f"The highest temperature recorded in the last 10 years was {highest_temp_value}°C in month {highest_temp_month} of {highest_temp_year}.\n")
 
 #function to calculate the average temperature for each season

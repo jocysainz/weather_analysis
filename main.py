@@ -1,8 +1,7 @@
 import os
 from data_loader import load_data  #import function to load the dataset
 from temperature_analysis import find_highest_temperature, calculate_seasonal_averages, compare_seasons  #import analysis functions
-from visualization import show_seasonal_avg_chart  #import function for showing seasonal average chart
-from user_interaction import ask_user_to_show_chart  #import function to ask user if they want to see a chart
+from visualization import show_seasonal_avg_chart, ask_user_to_show_chart  #import function for showing seasonal average chart and asking user for input
 
 if __name__ == "__main__":  #check if the script is being run directly
     #define the path to the dataset

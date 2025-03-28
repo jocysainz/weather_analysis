@@ -6,6 +6,9 @@ def load_data(file_path):
     try:
         df = pd.read_csv(file_path)
         print("Dataset loaded successfully!\n")
+    except FileNotFoundError:
+        print(f"Error: The file at {file_path} does not exist.\n")
+        return None
     except Exception as e:
         print(f"Error loading dataset: {e}\n")
         return None
