@@ -1,5 +1,6 @@
 import pandas as pd
 import matplotlib.pyplot as plt
+from colorama import Fore, Style
 
 #function to find the highest temperature
 def find_highest_temperature(df):
@@ -37,8 +38,19 @@ def calculate_seasonal_averages(df):
     
     #calculate the average temperature for each season
     seasonal_avg = df.groupby('season')['temp_max'].mean()
-    print("Average temperature for each season:")
-    print(seasonal_avg)
+    
+    # Define colors for each season
+    season_colors = {
+        "Fall": Fore.YELLOW,
+        "Spring": Fore.GREEN,
+        "Summer": Fore.RED,
+        "Winter": Fore.CYAN
+    }
+    
+    # Print the seasonal averages with colors
+    print("\nAverage temperature for each season:")
+    for season, temp in seasonal_avg.items():
+        print(f"{season_colors.get(season, Fore.WHITE)}{season}: {temp:.2f}°C{Style.RESET_ALL}")
     
     return seasonal_avg
 
