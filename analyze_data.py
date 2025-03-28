@@ -35,8 +35,7 @@ def find_highest_temperature(df):
     highest_temp_value = highest_temp['temp_max']
     highest_temp_year = highest_temp['year']
     
-    
-    print('\n')
+    print('\n')#space for better reading
     print(f"The highest temperature recorded in the last 10 years was {highest_temp_value}°C in month {highest_temp_month} of {highest_temp_year}.\n")
 
 #function to calculate the average temperature for each season
@@ -56,13 +55,25 @@ def calculate_seasonal_averages(df):
     print("Average temperature for each season:")
     print(seasonal_avg)
     
-    #plot the seasonal average temperatures
-    #bar chart
-    seasonal_avg.plot(kind='bar')
-    plt.title("Average Maximum Temperature by Season")
-    plt.xlabel("Season")
+    return seasonal_avg
+
+#new function to compare average temperatures for each season across years
+def compare_seasons(df):
+    #group by 'year' and 'season' to calculate the average 'temp_max' temperature for each combination
+    season_avg_by_year = df.groupby(['year', 'season'])['temp_max'].mean().unstack()
+    
+    #plot the comparison of average temperature by year and season
+    season_avg_by_year.plot(kind='bar', figsize=(10, 6))
+    plt.title("Comparison of Average Temperature by Year and Season")
+    plt.xlabel("Year")
     plt.ylabel("Average Temperature (°C)")
+    plt.xticks(rotation=45)
     plt.show()
+
+#function to ask the user if they want to see a specific chart
+def ask_user_to_show_chart(chart_number):
+    response = input(f"Would you like to see Chart {chart_number}? (yes/no): ").lower()
+    return response == 'yes'
 
 if __name__ == "__main__":
     #path to dataset
@@ -72,6 +83,20 @@ if __name__ == "__main__":
         df = load_data(file_path)
         if df is not None:
             find_highest_temperature(df)
-            calculate_seasonal_averages(df)
+            seasonal_avg = calculate_seasonal_averages(df)
+            
+            #ask the user if they want to see Chart 1 (Seasonal Averages)
+            if ask_user_to_show_chart(1):
+                seasonal_avg.plot(kind='bar')
+                plt.title("Average Maximum Temperature by Season")
+                plt.xlabel("Season")
+                plt.ylabel("Average Temperature (°C)")
+                plt.show()
+            
+            #ask the user if they want to see Chart 2 (Comparison of Seasons across Years)
+            if ask_user_to_show_chart(2):
+                compare_seasons(df)  #show the comparison charts if the user agrees
+            else:
+                print("Charts will not be displayed.")
     else:
         print(f"Error: The file at {file_path} does not exist.")
